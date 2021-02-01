@@ -1,11 +1,14 @@
 package me.dragonhee.demoinfleanrestapi.events;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpHeaders;
@@ -20,8 +23,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest //web용 빈만 가져옴.
-
+//@WebMvcTest //web용 빈만 가져옴.
+@SpringBootTest
+@AutoConfigureMockMvc
 public class EventControllerTests {
 
     @Autowired
@@ -30,8 +34,8 @@ public class EventControllerTests {
     @Autowired
     ObjectMapper objectMapper;
 
-    @MockBean
-    EventReposiroty eventReposiroty;
+//    @MockBean
+//    EventReposiroty eventReposiroty;
 
     @Test
     public void createEvent() throws Exception {
@@ -47,11 +51,13 @@ public class EventControllerTests {
                 .maxPrice(200)
                 .limitOfEnrollment(100)
                 .location("강남역~")
+                .free(true)
+                .offline(false)
                 .build();
 
-        System.out.println("1============================");
-        Mockito.when(eventReposiroty.save(event)).thenReturn(event);
-        System.out.println("2============================");
+//        System.out.println("1============================");
+//        Mockito.when(eventReposiroty.save(event)).thenReturn(event);
+//        System.out.println("2============================");
         mockMvc.perform(post("/api/events/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaTypes.HAL_JSON)
@@ -61,7 +67,12 @@ public class EventControllerTests {
             .andExpect(status().isCreated())
             .andExpect(jsonPath("id").exists())
             .andExpect(header().exists("Location"))
-            .andExpect(header().string(HttpHeaders.CONTENT_TYPE,"application/hal+json"));
+            .andExpect(header().string(HttpHeaders.CONTENT_TYPE,"application/hal+json"))
+            .andExpect(jsonPath("id").value(Matchers.not(100)))
+            .andExpect(jsonPath("free").value(Matchers.not(true)))
+            .andExpect(jsonPath("eventStatus").value(EventStatus.DRAFT.name()))
+
+        ;
 
     }
 

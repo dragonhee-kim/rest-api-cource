@@ -1,7 +1,9 @@
 package me.dragonhee.demoinfleanrestapi;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class DemoInfleanRestApiApplication {
@@ -10,4 +12,8 @@ public class DemoInfleanRestApiApplication {
         SpringApplication.run(DemoInfleanRestApiApplication.class, args);
     }
 
+    @Bean
+    public ModelMapper modelMapper(){
+        return new ModelMapper();
+    }
 }
