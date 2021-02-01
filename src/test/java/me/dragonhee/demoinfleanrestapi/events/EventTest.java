@@ -22,7 +22,6 @@ class EventTest {
         String description = "hi";
         event.setDescription(description);
 
-//        assertEquals(event.getName(),"hi");
         assertEquals(event.getName(), description);
     }
 
