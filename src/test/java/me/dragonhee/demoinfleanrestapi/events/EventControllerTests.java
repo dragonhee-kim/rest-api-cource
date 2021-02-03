@@ -1,6 +1,7 @@
 package me.dragonhee.demoinfleanrestapi.events;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import me.dragonhee.demoinfleanrestapi.common.TestDescription;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,6 +39,7 @@ public class EventControllerTests {
 //    EventReposiroty eventReposiroty;
 
     @Test
+    @TestDescription("정상적으로 이벤트를 생성하는 테스트")
     public void createEvent() throws Exception {
         EventDto eventDto = EventDto.builder()
 //                .id(100)
@@ -77,6 +79,7 @@ public class EventControllerTests {
     }
 
     @Test
+    @TestDescription("입력 받을 수 없는 값을 사용하는 경우 에러 발생 테스트")
     public void createEvent_bad() throws Exception {
         Event event = Event.builder()
                 .id(100)
@@ -111,6 +114,7 @@ public class EventControllerTests {
     }
 
     @Test
+    @TestDescription("입력 값이 비어 있는 경우 에러 발생 테스트")
     public void createEvent_Bad_Request_empty_Input() throws Exception {
         EventDto eventDto = EventDto.builder().build();
 
@@ -121,6 +125,7 @@ public class EventControllerTests {
     }
 
     @Test
+    @TestDescription("입력 값이 잘못 되어 있는 경우 에러 발생 테스트")
     public void createEvent_Bad_Request_empty_Input2() throws Exception {
         EventDto eventDto = EventDto.builder()
                 .name("Spring")
