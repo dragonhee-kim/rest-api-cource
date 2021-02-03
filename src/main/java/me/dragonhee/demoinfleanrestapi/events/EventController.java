@@ -29,16 +29,19 @@ public class EventController {
         this.modelMapper = modelMapper;
         this.eventValidator = eventValidator;
     }
+    //Errors 는 beanserialize 준수 안함
+    //그래서 바로 body(errors) 사용못함. json으로 바로 변환이 안됨
+    //어떻게 해결하지?
 
     @PostMapping
     public ResponseEntity createdEvent(@RequestBody @Valid EventDto eventDto, Errors errors){
         if(errors.hasErrors()){
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(errors);
         }
 
         eventValidator.validate(eventDto, errors);
         if(errors.hasErrors()){
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(errors);
         }
 
         Event event = modelMapper.map(eventDto,Event.class);
