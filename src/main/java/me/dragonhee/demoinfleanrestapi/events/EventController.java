@@ -1,6 +1,7 @@
 package me.dragonhee.demoinfleanrestapi.events;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.validation.Errors;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.ResponseEntity;
@@ -47,10 +48,16 @@ public class EventController {
         Event event = modelMapper.map(eventDto,Event.class);
         event.update();
         Event newEvent = this.eventReposiroty.save(event);
-        URI createdURI = linkTo(EventController.class).slash(newEvent.getId()).toUri();
+        WebMvcLinkBuilder webMvcLinkBuilder = linkTo(EventController.class).slash(newEvent.getId());
+        URI createdURI = webMvcLinkBuilder.toUri();
 
 
-        return ResponseEntity.created(createdURI).body(event);
+        EventResource eventResource = new EventResource(event);
+        eventResource.add(linkTo(EventController.class).withRel("query-events"));
+//        eventResource.add(webMvcLinkBuilder.withSelfRel()); -> EventResource에서 넣음.
+        eventResource.add(webMvcLinkBuilder.withRel("update-event"));
+
+        return ResponseEntity.created(createdURI).body(eventResource);
     }
 
 }
