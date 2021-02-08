@@ -1,5 +1,6 @@
 package me.dragonhee.demoinfleanrestapi.index;
 
+import me.dragonhee.demoinfleanrestapi.common.BaseTestController;
 import me.dragonhee.demoinfleanrestapi.common.RestDocsConfiguration;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,16 +17,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringRunner.class)
-//@WebMvcTest //web용 빈만 가져옴.
-@SpringBootTest
-@AutoConfigureMockMvc
-@AutoConfigureRestDocs
-@Import(RestDocsConfiguration.class)
-@ActiveProfiles("test")
-public class IndexControllerTest {
-    @Autowired
-    MockMvc mockMvc;
+public class IndexControllerTest extends BaseTestController {
 
     @Test
     public void index() throws Exception {
