@@ -2,6 +2,7 @@ package me.dragonhee.demoinfleanrestapi.configs;
 
 
 import me.dragonhee.demoinfleanrestapi.accounts.Account;
+import me.dragonhee.demoinfleanrestapi.accounts.AccountRepository;
 import me.dragonhee.demoinfleanrestapi.accounts.AccountRole;
 import me.dragonhee.demoinfleanrestapi.accounts.AccountService;
 import org.modelmapper.ModelMapper;
@@ -37,14 +38,20 @@ public class AppConfig {
 
             @Override
             public void run(ApplicationArguments args) throws Exception {
-                Account account = Account.builder()
-                        .email("dragonhee.kim@gmail.com")
-                        .password("dydrkfl1")
-                        .roles(Set.of(AccountRole.ADMIN, AccountRole.USER))
+                Account admin = Account.builder()
+                        .email("admin@gmail.com")
+                        .password("admin")
+                        .roles(Set.of(AccountRole.ADMIN))
                         .build();
 
-                accountService.saveAccount(account);
+                accountService.saveAccount(admin);
 
+                Account user = Account.builder()
+                        .email("user@gmail.com")
+                        .password("user")
+                        .roles(Set.of(AccountRole.USER))
+                        .build();
+                accountService.saveAccount(user);
             }
         };
     }
