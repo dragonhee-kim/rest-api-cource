@@ -69,6 +69,14 @@
             <scope>test</scope>
         </dependency>
 
+        <!--프로퍼티 자동완성 할 수 있게  -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+
 
         <dependency>
             <groupId>org.modelmapper</groupId>

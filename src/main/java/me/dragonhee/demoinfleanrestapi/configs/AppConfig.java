@@ -5,6 +5,7 @@ import me.dragonhee.demoinfleanrestapi.accounts.Account;
 import me.dragonhee.demoinfleanrestapi.accounts.AccountRepository;
 import me.dragonhee.demoinfleanrestapi.accounts.AccountRole;
 import me.dragonhee.demoinfleanrestapi.accounts.AccountService;
+import me.dragonhee.demoinfleanrestapi.common.AppProperties;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -36,19 +37,22 @@ public class AppConfig {
             @Autowired
             AccountService accountService;
 
+            @Autowired
+            AppProperties appProperties;
+
             @Override
             public void run(ApplicationArguments args) throws Exception {
                 Account admin = Account.builder()
-                        .email("admin@gmail.com")
-                        .password("admin")
+                        .email(appProperties.getAdminUsername())
+                        .password(appProperties.getAdminPassword())
                         .roles(Set.of(AccountRole.ADMIN))
                         .build();
 
                 accountService.saveAccount(admin);
 
                 Account user = Account.builder()
-                        .email("user@gmail.com")
-                        .password("user")
+                        .email(appProperties.getUserUsername())
+                        .password(appProperties.getUserPassword())
                         .roles(Set.of(AccountRole.USER))
                         .build();
                 accountService.saveAccount(user);

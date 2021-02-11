@@ -5,6 +5,7 @@ import me.dragonhee.demoinfleanrestapi.accounts.Account;
 import me.dragonhee.demoinfleanrestapi.accounts.AccountRepository;
 import me.dragonhee.demoinfleanrestapi.accounts.AccountRole;
 import me.dragonhee.demoinfleanrestapi.accounts.AccountService;
+import me.dragonhee.demoinfleanrestapi.common.AppProperties;
 import me.dragonhee.demoinfleanrestapi.common.BaseTestController;
 import me.dragonhee.demoinfleanrestapi.common.RestDocsConfiguration;
 import me.dragonhee.demoinfleanrestapi.common.TestDescription;
@@ -60,6 +61,9 @@ public class EventControllerTests extends BaseTestController {
 
     @Autowired
     AccountRepository accountRepository;
+
+    @Autowired
+    AppProperties appProperties;
 
     @Before
     public void setUp(){
@@ -175,6 +179,7 @@ public class EventControllerTests extends BaseTestController {
 
     private String getAccessToken() throws Exception {
         //Given
+        //default user가 있기 때문에 또 저장할 필요 없다.
         String username = "dragonhee.kim2@gmail.com";
         String password = "dydrkfl1";
         Account account = Account.builder()
@@ -182,7 +187,6 @@ public class EventControllerTests extends BaseTestController {
                 .password(password)
                 .roles(Set.of(AccountRole.ADMIN, AccountRole.USER))
                 .build();
-
         this.accountService.saveAccount(account);
 
         String clientId = "myApp";
@@ -190,7 +194,7 @@ public class EventControllerTests extends BaseTestController {
 
         ResultActions perform = this.mockMvc.perform(post("/oauth/token")
                 .with(httpBasic(clientId, clientSecret))
-                .param("username", username)
+                .param("username",username)
                 .param("password", password)
                 .param("grant_type", "password"));
 
