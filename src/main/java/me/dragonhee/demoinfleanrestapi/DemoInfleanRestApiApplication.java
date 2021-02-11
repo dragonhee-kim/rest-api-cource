@@ -12,8 +12,5 @@ public class DemoInfleanRestApiApplication {
         SpringApplication.run(DemoInfleanRestApiApplication.class, args);
     }
 
-    @Bean
-    public ModelMapper modelMapper(){
-        return new ModelMapper();
-    }
+
 }
